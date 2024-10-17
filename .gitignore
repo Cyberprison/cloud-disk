@@ -1,5 +1,11 @@
+#back
 bin
 obj
 *.sln
-*.pdf
 *.vs
+
+#front
+node_modules
+
+#staff
+*.pdf
