@@ -1,0 +1,49 @@
+version: '3.8'  # Укажите версию Docker Compose
+
+services:
+  mongodb:
+    image: mongo:latest  # Используем официальный образ MongoDB
+    container_name: mongo_db
+    restart: always  # Перезапускать контейнер в случае сбоя
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: $MONGO_INITDB_ROOT_USERNAME  # Имя пользователя для MongoDB
+      MONGO_INITDB_ROOT_PASSWORD: $MONGO_INITDB_ROOT_PASSWORD  # Пароль для MongoDB
+    ports:
+      - "${PORT}:21707"  # Проброс порта для доступа к MongoDB из хоста
+    volumes:
+      - mongo_data:/data/db  # Используем именованный volume для хранения данных
+    networks:
+      - mongo_network
+
+  server:
+    build:
+      context: ./server/Presentation/WebAPI  # Контекст сборки, указывающий на текущую директорию
+      dockerfile: Dockerfile  # Укажите имя Dockerfile, если оно отличается
+    image: server:latest  # Имя и тег создаваемого образа
+    ports:
+      - 5000:80
+    depends_on:
+      - mongodb  # Зависимость от сервиса MongoDB
+    networks:
+      - server_network
+
+  client:
+    build:
+      context: ./client  # Контекст сборки, указывающий на текущую директорию
+      dockerfile: Dockerfile  # Укажите имя Dockerfile, если оно отличается
+    image: client:latest  # Имя и тег создаваемого образа
+    ports:
+      - 9000:9000
+    depends_on:
+      - server  # Зависимость от сервиса MongoDB
+    networks:
+      - client_network
+
+# Определяем именованный volume
+volumes:
+  mongo_data:
+
+networks:
+  mongo_network:
+  server_network:
+  client_network:
