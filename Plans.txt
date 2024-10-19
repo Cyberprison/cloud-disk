@@ -27,4 +27,13 @@ workflow etc
 #docker-compose up -d 
 #docker-compose down
 
+скачать пакет для монго
+придумать как чо работать из асп с монго
+в еф, в монго пакете или через даппер
 
+а вот как будут схемы бд сохраняться
+наверное либо какие нибудь volume придумать
+или миграции EF при каждом запуске применять
+забыл вообще как локально работают БД
+
+docker run --rm -d -p 27017:27017 --name my-mongodb -e MONGO_INITDB_ROOT_USERNAME=login -e MONGO_INITDB_ROOT_PASSWORD=pass mongo:latest
