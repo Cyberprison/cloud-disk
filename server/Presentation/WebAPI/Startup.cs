@@ -30,22 +30,16 @@ namespace WebAPI {
                     var db = client.GetDatabase("test");    
 
                     // получаем коллекцию users
-                    var collection = db.GetCollection<BsonDocument>("users"); 
+                    var collection = db.GetCollection<User>("users"); 
 
                     // для теста добавляем начальные данные, если коллекция пуста
                     if (await collection.CountDocumentsAsync("{}") == 0)
                     {
-                        await collection.InsertManyAsync(new List<BsonDocument>
-                        {
-                            new BsonDocument{ 
-                                { "Name", "Tom" },
-                                {"Age", 22}
-                            },
-                            new BsonDocument{ 
-                                { "Name", "Bob" },
-                                {"Age", 42}
+                        await collection.InsertOneAsync(
+                            new User(){
+                                Email = "hiiii"
                             }
-                        });
+                        );
                     }
                     var users =  await collection.Find("{}").ToListAsync();
 
